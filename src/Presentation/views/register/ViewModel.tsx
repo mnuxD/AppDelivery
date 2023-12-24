@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ApiDelivery } from "../../../Data/sources/remote/api/ApiDelivery";
 import { RegisterAuthUseCase } from "../../../Domain/useCases/auth/RegisterAuth";
 import * as ImagePicker from "expo-image-picker";
+import { RegisterWithImageAuthUseCase } from "../../../Domain/useCases/auth/RegisterWIthImageAuth";
 
 const RegisterViewModel = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,7 +48,8 @@ const RegisterViewModel = () => {
   };
   const register = async () => {
     if (isValidForm()) {
-      const response = await RegisterAuthUseCase(values);
+      // const response = await RegisterAuthUseCase(values);
+      const response = await RegisterWithImageAuthUseCase(values, file!);
       console.log("RESULT: " + JSON.stringify(response));
     }
   };
@@ -79,6 +81,10 @@ const RegisterViewModel = () => {
     }
     if (values.password !== values.confirmPassword) {
       setErrorMessage("Las contraseñas no coinciden");
+      return false;
+    }
+    if (values.image === "") {
+      setErrorMessage("Selecciona una imagen");
       return false;
     }
     return true;
