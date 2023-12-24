@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { ApiDelivery } from "../../../Data/sources/remote/api/ApiDelivery";
-import { RegisterAuthUseCase } from "../../../Domain/useCases/auth/RegisterAuth";
 import * as ImagePicker from "expo-image-picker";
 import { RegisterWithImageAuthUseCase } from "../../../Domain/useCases/auth/RegisterWIthImageAuth";
+import { useUserLocal } from "../../hooks/useUserLocal";
+import { SaveUserLocalUseCase } from "../../../Domain/useCases/userLocal/SaveUserLocal";
 
 const RegisterViewModel = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -16,6 +16,8 @@ const RegisterViewModel = () => {
     confirmPassword: "",
   });
   const [file, setFile] = useState<ImagePicker.ImagePickerAsset>();
+  const { user, getUserSession } = useUserLocal();
+  const [loading, setLoading] = useState(false);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -48,9 +50,17 @@ const RegisterViewModel = () => {
   };
   const register = async () => {
     if (isValidForm()) {
+      setLoading(true);
       // const response = await RegisterAuthUseCase(values);
       const response = await RegisterWithImageAuthUseCase(values, file!);
+      setLoading(false);
       console.log("RESULT: " + JSON.stringify(response));
+      if (response.success) {
+        await SaveUserLocalUseCase(response.data);
+        getUserSession(); //para recargar el estado del usuario
+      } else {
+        setErrorMessage(response.message);
+      }
     }
   };
 
@@ -90,7 +100,16 @@ const RegisterViewModel = () => {
     return true;
   };
 
-  return { ...values, onChange, pickImage, takePhoto, register, errorMessage };
+  return {
+    ...values,
+    loading,
+    user,
+    onChange,
+    pickImage,
+    takePhoto,
+    register,
+    errorMessage,
+  };
 };
 
 export default RegisterViewModel;
