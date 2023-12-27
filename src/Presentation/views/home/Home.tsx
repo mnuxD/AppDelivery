@@ -29,7 +29,8 @@ export const HomeScreen = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     if (user?.id) {
-      navigation.replace("ProfileInfoScreen");
+      if (user.roles?.length! > 1) navigation.replace("RolesScreen");
+      else navigation.replace("ClientTabsNavigator");
     }
   }, [user]);
 
