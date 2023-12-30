@@ -6,7 +6,7 @@ import {
   ScrollView,
   ToastAndroid,
   TouchableOpacity,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import { RoundedButton } from "../../../components/RoundedButton";
 import useViewModel from "./ViewModel";
@@ -14,8 +14,8 @@ import styles from "./Styles";
 import { CustomTextInput } from "../../../components/CustomTextInput";
 import { ModalPickImage } from "../../../components/ModalPickImage";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../../../App";
-import { MyColors } from "../../../theme/AppTheme";
+import { MyColors, MyStyles } from "../../../theme/AppTheme";
+import { RootStackParamList } from "../../../navigator/MainStackNavigator";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "ProfileUpdateScreen"> {}
@@ -34,7 +34,7 @@ export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
     takePhoto,
     onChange,
     onChangeInfoUpdate,
-    update,
+    update
   } = useViewModel(user);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -110,7 +110,7 @@ export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
       />
       {loading && (
         <ActivityIndicator
-          style={styles.loading}
+          style={MyStyles.loading}
           size="large"
           color={MyColors.primary}
         />

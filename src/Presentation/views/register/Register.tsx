@@ -6,7 +6,7 @@ import {
   ScrollView,
   ToastAndroid,
   TouchableOpacity,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import { RoundedButton } from "../../components/RoundedButton";
 import useViewModel from "./ViewModel";
@@ -14,8 +14,8 @@ import styles from "./Styles";
 import { CustomTextInput } from "../../components/CustomTextInput";
 import { ModalPickImage } from "../../components/ModalPickImage";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../../App";
 import { MyColors } from "../../theme/AppTheme";
+import { RootStackParamList } from "../../navigator/MainStackNavigator";
 
 interface Props
   extends StackScreenProps<RootStackParamList, "RegisterScreen"> {}
@@ -35,7 +35,7 @@ export const RegisterScreen = ({ navigation, route }: Props) => {
     pickImage,
     takePhoto,
     onChange,
-    register,
+    register
   } = useViewModel();
   const [modalVisible, setModalVisible] = useState(false);
 

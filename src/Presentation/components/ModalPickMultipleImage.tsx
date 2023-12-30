@@ -3,15 +3,17 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { RoundedButton } from "./RoundedButton";
 
 interface Props {
-  openGalery: () => void;
-  openCamera: () => void;
+  openGalery: (numberImage: number) => void;
+  openCamera: (numberImage: number) => void;
+  numberImage: number;
   modalUseState: boolean;
   setModalUseState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ModalPickImage = ({
+export const ModalPickMultipleImage = ({
   openCamera,
   openGalery,
+  numberImage,
   setModalUseState,
   modalUseState
 }: Props) => {
@@ -32,14 +34,14 @@ export const ModalPickImage = ({
             <RoundedButton
               text="Galeria"
               onPress={() => {
-                openGalery();
+                openGalery(numberImage);
                 setModalUseState(false);
               }}
             ></RoundedButton>
             <RoundedButton
               text="Cámara"
               onPress={() => {
-                openCamera();
+                openCamera(numberImage);
                 setModalUseState(false);
               }}
             ></RoundedButton>

@@ -6,14 +6,14 @@ import {
   TextInput,
   ToastAndroid,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { RoundedButton } from "../../components/RoundedButton";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../../App";
 import useViewModel from "./ViewModel";
 import styles from "./Styles";
 import { CustomTextInput } from "../../components/CustomTextInput";
+import { RootStackParamList } from "../../navigator/MainStackNavigator";
 
 interface Props extends StackScreenProps<RootStackParamList, "HomeScreen"> {}
 

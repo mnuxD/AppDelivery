@@ -3,9 +3,9 @@ import { Image, Text, View, TouchableOpacity } from "react-native";
 import useViewModel from "./ViewModel";
 import { RoundedButton } from "../../../components/RoundedButton";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../../../App";
 import styles from "./Styles";
 import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../../../navigator/MainStackNavigator";
 
 export const ProfileInfoScreen = () => {
   const { removeUserSession, user } = useViewModel();

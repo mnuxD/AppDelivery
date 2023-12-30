@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { RegisterWithImageAuthUseCase } from "../../../Domain/useCases/auth/RegisterWIthImageAuth";
 import { useUserLocal } from "../../hooks/useUserLocal";
 import { SaveUserLocalUseCase } from "../../../Domain/useCases/userLocal/SaveUserLocal";
+import { UserContext } from "../../context/UserContext";
 
 const RegisterViewModel = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -18,6 +19,8 @@ const RegisterViewModel = () => {
   const [file, setFile] = useState<ImagePicker.ImagePickerAsset>();
   const { user, getUserSession } = useUserLocal();
   const [loading, setLoading] = useState(false);
+
+  const { saveUserSession } = useContext(UserContext);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -56,8 +59,7 @@ const RegisterViewModel = () => {
       setLoading(false);
       console.log("RESULT: " + JSON.stringify(response));
       if (response.success) {
-        await SaveUserLocalUseCase(response.data);
-        getUserSession(); //para recargar el estado del usuario
+        saveUserSession(response.data);
       } else {
         setErrorMessage(response.message);
       }

@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Rol } from "../../../Domain/entities/Rol";
 import { MyColors } from "../../theme/AppTheme";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../../App";
+import { RootStackParamList } from "../../navigator/MainStackNavigator";
 interface Props {
   rol: Rol;
   height: number;
@@ -37,16 +37,16 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: "center",
     paddingBottom: 20,
-    paddingHorizontal: 7,
+    paddingHorizontal: 7
   },
   imageContainer: {
     flex: 1,
     borderRadius: 18,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   image: {
     flex: 1,
-    resizeMode: "contain",
+    resizeMode: "contain"
   },
   titleContainer: {
     height: 50,
@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   title: {
-    color: "white",
-  },
+    color: "white"
+  }
 });

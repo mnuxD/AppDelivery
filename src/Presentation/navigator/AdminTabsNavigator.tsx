@@ -2,26 +2,26 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AdminCategoryListScreen } from "../views/admin/category/list/CategoryList";
 import { AdminOrderListScreen } from "../views/admin/order/list/OrderList";
 import { ProfileInfoScreen } from "../views/profile/info/ProfileInfo";
-import { Image } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
+import { AdminCategoryNavigator } from "./AdminCategoryNavigator";
 
 const Tab = createBottomTabNavigator();
 
 export const AdminTabsNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
-        name="AdminCategoryListScreen"
-        component={AdminCategoryListScreen}
-        options={{
-          title: "Categorías",
+        name="AdminCategoryNavigator"
+        component={AdminCategoryNavigator}
+        options={({ route, navigation }) => ({
           tabBarLabel: "Categorías",
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: () => (
             <Image
               source={require("../../../assets/list.png")}
               style={{ width: 25, height: 25 }}
             />
-          ),
-        }}
+          )
+        })}
       />
       <Tab.Screen
         name="AdminOrderListScreen"
@@ -34,7 +34,7 @@ export const AdminTabsNavigator = () => {
               source={require("../../../assets/orders.png")}
               style={{ width: 25, height: 25 }}
             />
-          ),
+          )
         }}
       />
       <Tab.Screen
@@ -49,7 +49,7 @@ export const AdminTabsNavigator = () => {
               source={require("../../../assets/user_menu.png")}
               style={{ width: 25, height: 25 }}
             />
-          ),
+          )
         }}
       />
     </Tab.Navigator>

@@ -11,7 +11,7 @@ import {
 interface Props {
   image: any;
   placeholder?: string;
-  value: string;
+  value: any;
   keyboardType?: KeyboardType;
   secureTextEntry?: boolean;
   property: string;
