@@ -7,4 +7,5 @@ export interface Product {
   image2: string;
   image3: string;
   id_category: string | undefined;
+  quantity?: number;
 }
