@@ -5,6 +5,8 @@ import { createContext, useState } from "react";
 import { CreateProductUseCase } from "../../Domain/useCases/product/CreateProduct";
 import { GetProductsByCategoryUseCase } from "../../Domain/useCases/product/GetProductsByCategory";
 import { RemoveProductUseCase } from "../../Domain/useCases/product/RemoveProduct";
+import { UpdateProductUseCase } from "../../Domain/useCases/product/UpdateProduct";
+import { UpdateWithImageProductUseCase } from "../../Domain/useCases/product/UpdateWIthImageProduct";
 
 export interface ProductContextProps {
   products: Product[];
@@ -13,6 +15,11 @@ export interface ProductContextProps {
     product: Product,
     files: ImagePickerAsset[]
   ): Promise<ResponseApiDelivery>;
+  updateWithImage(
+    product: Product,
+    files: ImagePickerAsset[]
+  ): Promise<ResponseApiDelivery>;
+  update(product: Product): Promise<ResponseApiDelivery>;
   remove(product: Product): Promise<ResponseApiDelivery>;
 }
 
@@ -20,6 +27,11 @@ export const ProductContext = createContext({} as ProductContextProps);
 
 export const ProductProvider = ({ children }: any) => {
   const [products, setProducts] = useState<Product[]>([]);
+
+  const getProducts = async (idCategory: string): Promise<void> => {
+    const result = await GetProductsByCategoryUseCase(idCategory);
+    setProducts(result);
+  };
 
   const create = async (
     product: Product,
@@ -30,9 +42,19 @@ export const ProductProvider = ({ children }: any) => {
     return response;
   };
 
-  const getProducts = async (idCategory: string): Promise<void> => {
-    const result = await GetProductsByCategoryUseCase(idCategory);
-    setProducts(result);
+  const update = async (product: Product): Promise<ResponseApiDelivery> => {
+    const response = await UpdateProductUseCase(product);
+    getProducts(product.id_category!);
+    return response;
+  };
+
+  const updateWithImage = async (
+    product: Product,
+    files: ImagePickerAsset[]
+  ): Promise<ResponseApiDelivery> => {
+    const response = await UpdateWithImageProductUseCase(product, files);
+    getProducts(product.id_category!);
+    return response;
   };
 
   const remove = async (product: Product): Promise<ResponseApiDelivery> => {
@@ -42,7 +64,9 @@ export const ProductProvider = ({ children }: any) => {
   };
 
   return (
-    <ProductContext.Provider value={{ products, getProducts, create, remove }}>
+    <ProductContext.Provider
+      value={{ products, getProducts, create, update, updateWithImage, remove }}
+    >
       {children}
     </ProductContext.Provider>
   );

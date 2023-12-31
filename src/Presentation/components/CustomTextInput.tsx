@@ -11,7 +11,7 @@ import {
 interface Props {
   image: any;
   placeholder?: string;
-  value: any;
+  value: string | number | undefined;
   keyboardType?: KeyboardType;
   secureTextEntry?: boolean;
   property: string;
@@ -38,7 +38,7 @@ export const CustomTextInput = ({
         autoCapitalize={autoCapitalize}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
-        value={value}
+        value={`${value}` || ""}
         onChangeText={(text) => onChangeText(property, text)}
       />
     </View>

@@ -5,17 +5,18 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Product } from "../../../../../Domain/entities/Product";
 import { ProductStackParamList } from "../../../../navigator/AdminProductNavigator";
 import { Category } from "../../../../../Domain/entities/Category";
+import { ClientStackParamList } from "../../../../navigator/ClientStackNavigator";
 
 interface Props {
   product: Product;
-  category: Category;
-  remove: (product: Product) => void;
+  navigation: StackNavigationProp<
+    ClientStackParamList,
+    "ClientProductListScreen",
+    undefined
+  >;
 }
 
-export const AdminProductListItem = ({ product, remove, category }: Props) => {
-  const navigation =
-    useNavigation<StackNavigationProp<ProductStackParamList>>();
-
+export const ClientProductItem = ({ product, navigation }: Props) => {
   return (
     <TouchableOpacity
     // onPress={() =>
@@ -23,33 +24,12 @@ export const AdminProductListItem = ({ product, remove, category }: Props) => {
     // }
     >
       <View style={styles.container}>
-        <Image style={styles.image} source={{ uri: product.image1 }} />
         <View style={styles.info}>
           <Text style={styles.title}>{product.name}</Text>
           <Text style={styles.description}>{product.description}</Text>
           <Text style={styles.price}>S./{product.price}</Text>
         </View>
-        <View style={styles.actionContainer}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("AdminProductUpdateScreen", {
-                category: category,
-                product: product
-              })
-            }
-          >
-            <Image
-              style={styles.actionImage}
-              source={require("../../../../../../assets/edit.png")}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => remove(product)}>
-            <Image
-              style={styles.actionImage}
-              source={require("../../../../../../assets/trash.png")}
-            />
-          </TouchableOpacity>
-        </View>
+        <Image style={styles.image} source={{ uri: product.image1 }} />
       </View>
       <View style={styles.divider} />
     </TouchableOpacity>
@@ -61,7 +41,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     height: 90,
-    marginHorizontal: 20,
+    paddingHorizontal: 20,
     marginTop: 10,
     alignItems: "center"
   },
@@ -84,17 +64,9 @@ const styles = StyleSheet.create({
     marginTop: 3
   },
   price: {
-    color: "green",
+    color: "black",
     fontSize: 12,
     fontWeight: "bold"
-  },
-  actionContainer: {
-    marginRight: 40
-  },
-  actionImage: {
-    width: 25,
-    height: 25,
-    marginVertical: 2
   },
   divider: {
     height: 1,

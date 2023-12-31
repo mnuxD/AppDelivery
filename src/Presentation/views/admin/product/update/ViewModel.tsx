@@ -2,28 +2,22 @@ import React, { useContext, useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Category } from "../../../../../Domain/entities/Category";
 import { ProductContext } from "../../../../context/ProductContext";
+import { Product } from "../../../../../Domain/entities/Product";
+import { ResponseApiDelivery } from "../../../../../Data/sources/remote/models/ResponseApiDelivery";
 
-const AdminProductProductViewModel = (category: Category) => {
+const AdminProductProductViewModel = (product: Product, category: Category) => {
   const [responseMessage, setResponseMessage] = useState("");
   const [file1, setFile1] = useState<ImagePicker.ImagePickerAsset>();
   const [file2, setFile2] = useState<ImagePicker.ImagePickerAsset>();
   const [file3, setFile3] = useState<ImagePicker.ImagePickerAsset>();
   const [loading, setLoading] = useState(false);
-  const [values, setValues] = useState({
-    name: "",
-    description: "",
-    price: "",
-    image1: "",
-    image2: "",
-    image3: "",
-    id_category: category.id
-  });
-  const { create } = useContext(ProductContext);
+  const [values, setValues] = useState(product);
+  const { update, updateWithImage } = useContext(ProductContext);
   const onChange = (property: string, value: any) => {
     setValues({ ...values, [property]: value });
   };
 
-  const createProduct = async () => {
+  const updateProduct = async () => {
     console.log(values);
 
     let files = [];
@@ -33,10 +27,19 @@ const AdminProductProductViewModel = (category: Category) => {
 
     if (isValidForm()) {
       setLoading(true);
-      const response = await create(values, files);
+      let response = {} as ResponseApiDelivery;
+      if (
+        values.image1.includes("https://") &&
+        values.image2.includes("https://") &&
+        values.image3.includes("https://")
+      ) {
+        response = await update(values);
+      } else {
+        response = await updateWithImage(values, files);
+      }
+
       setLoading(false);
       setResponseMessage(response.message);
-      if (response.success) resetForm();
     }
   };
 
@@ -110,18 +113,6 @@ const AdminProductProductViewModel = (category: Category) => {
     return true;
   };
 
-  const resetForm = async () => {
-    setValues({
-      name: "",
-      description: "",
-      price: "",
-      image1: "",
-      image2: "",
-      image3: "",
-      id_category: category.id
-    });
-  };
-
   return {
     ...values,
     loading,
@@ -129,7 +120,7 @@ const AdminProductProductViewModel = (category: Category) => {
     onChange,
     takePhoto,
     pickImage,
-    createProduct
+    updateProduct
   };
 };
 

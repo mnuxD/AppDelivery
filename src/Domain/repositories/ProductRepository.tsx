@@ -9,5 +9,10 @@ export interface ProductRepository {
   ): Promise<ResponseApiDelivery>;
 
   getProductsByCategory(idCategory: string): Promise<Product[]>;
+  update(product: Product): Promise<ResponseApiDelivery>;
+  updateWithImage(
+    product: Product,
+    files: ImagePickerAsset[]
+  ): Promise<ResponseApiDelivery>;
   remove(product: Product): Promise<ResponseApiDelivery>;
 }

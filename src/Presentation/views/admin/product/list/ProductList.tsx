@@ -12,7 +12,6 @@ export const AdminProductListScreen = ({ navigation, route }: Props) => {
   const { category } = route.params;
   const { products, responseMessage, getProducts, deleteProduct } =
     useViewModel();
-  console.log("category", category);
 
   useEffect(() => {
     if (products.length == 0) getProducts(category.id!);
@@ -29,6 +28,7 @@ export const AdminProductListScreen = ({ navigation, route }: Props) => {
         renderItem={({ item }) => (
           <AdminProductListItem
             product={item}
+            category={category}
             remove={() => {
               deleteProduct(item);
             }}

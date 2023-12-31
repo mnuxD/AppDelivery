@@ -18,10 +18,10 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { ProductStackParamList } from "../../../../navigator/AdminProductNavigator";
 
 interface Props
-  extends StackScreenProps<ProductStackParamList, "AdminProductCreateScreen"> {}
+  extends StackScreenProps<ProductStackParamList, "AdminProductUpdateScreen"> {}
 
-export const AdminProductCreateScreen = ({ navigation, route }: Props) => {
-  const { category } = route.params;
+export const AdminProductUpdateScreen = ({ navigation, route }: Props) => {
+  const { category, product } = route.params;
 
   const {
     name,
@@ -35,8 +35,8 @@ export const AdminProductCreateScreen = ({ navigation, route }: Props) => {
     onChange,
     takePhoto,
     pickImage,
-    createProduct
-  } = useViewModel(category);
+    updateProduct
+  } = useViewModel(product, category);
   const [modalVisible, setModalVisible] = useState(false);
   const [numberImage, setNumberImage] = useState(1);
 
@@ -128,9 +128,9 @@ export const AdminProductCreateScreen = ({ navigation, route }: Props) => {
           />
           <View style={styles.buttonContainer}>
             <RoundedButton
-              text="CREAR PRODUCTO"
+              text="ACTUALIZAR PRODUCTO"
               onPress={() => {
-                createProduct();
+                updateProduct();
               }}
             />
           </View>
