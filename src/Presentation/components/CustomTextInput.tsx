@@ -15,6 +15,7 @@ interface Props {
   keyboardType?: KeyboardType;
   secureTextEntry?: boolean;
   property: string;
+  editable?: boolean;
   autoCapitalize?: TextInputProps["autoCapitalize"];
   onChangeText: (property: string, value: any) => void;
 }
@@ -27,6 +28,7 @@ export const CustomTextInput = ({
   secureTextEntry = false,
   property,
   autoCapitalize = "sentences",
+  editable = true,
   onChangeText
 }: Props) => {
   return (
@@ -40,6 +42,7 @@ export const CustomTextInput = ({
         secureTextEntry={secureTextEntry}
         value={`${value}` || ""}
         onChangeText={(text) => onChangeText(property, text)}
+        editable={editable}
       />
     </View>
   );

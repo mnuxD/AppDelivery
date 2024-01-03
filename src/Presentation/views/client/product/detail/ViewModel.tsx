@@ -14,8 +14,6 @@ const ClientProductDetailViewModel = (product: Product) => {
     }
   };
 
-  console.log(shoppingBag);
-
   const addItem = () => {
     setQuantity(quantity + 1);
   };

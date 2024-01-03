@@ -10,7 +10,6 @@ import { RootStackParamList } from "../../../navigator/MainStackNavigator";
 export const ProfileInfoScreen = () => {
   const { removeUserSession, user } = useViewModel();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  console.log("user", user);
 
   useEffect(() => {
     if (!user.id) {

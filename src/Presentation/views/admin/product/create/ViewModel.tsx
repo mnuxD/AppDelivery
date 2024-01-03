@@ -24,8 +24,6 @@ const AdminProductCreateViewModel = (category: Category) => {
   };
 
   const createProduct = async () => {
-    console.log(values);
-
     let files = [];
     files.push(file1!);
     files.push(file2!);

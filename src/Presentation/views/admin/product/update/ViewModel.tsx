@@ -18,8 +18,6 @@ const AdminProductProductViewModel = (product: Product, category: Category) => {
   };
 
   const updateProduct = async () => {
-    console.log(values);
-
     let files = [];
     files.push(file1!);
     files.push(file2!);

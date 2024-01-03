@@ -25,13 +25,32 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gopetutorial.appdelivery",
+      "config": {
+        "googleMapsApiKey": "AIzaSyAOqIo6IN-B-dbY9RmSrUzU8nsuXVp45cg"
+      },
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gopetutorial.appdelivery",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAOqIo6IN-B-dbY9RmSrUzU8nsuXVp45cg"
+        }
+      },
+      "permissions": [
+        "ACCESS_BACKGROUND_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
