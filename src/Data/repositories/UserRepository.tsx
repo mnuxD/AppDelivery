@@ -4,12 +4,23 @@ import { UserRepository } from "../../Domain/repositories/UserRepository";
 import { ResponseApiDelivery } from "../sources/remote/models/ResponseApiDelivery";
 import {
   ApiDelivery,
-  ApiDeliveryForImage,
+  ApiDeliveryForImage
 } from "../sources/remote/api/ApiDelivery";
 import { AxiosError } from "axios";
 import mime from "mime";
 
 export class UserRepositoryImpl implements UserRepository {
+  async getDelivery(): Promise<User[]> {
+    try {
+      const response = await ApiDelivery.get<User[]>("/users/findDelivery");
+      return Promise.resolve(response.data);
+    } catch (error) {
+      let e = error as AxiosError;
+      console.log("ERROR: ", JSON.stringify(e.response?.data));
+      return Promise.resolve([]);
+    }
+  }
+
   async update(user: User): Promise<ResponseApiDelivery> {
     try {
       const response = await ApiDelivery.put<ResponseApiDelivery>(
@@ -37,7 +48,7 @@ export class UserRepositoryImpl implements UserRepository {
       data.append("image", {
         uri: file.uri,
         name: file.uri.split("/").pop(),
-        type: mime.getType(file.uri)!,
+        type: mime.getType(file.uri)!
       });
       data.append("user", JSON.stringify(user));
 
