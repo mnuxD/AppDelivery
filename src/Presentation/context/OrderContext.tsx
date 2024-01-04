@@ -6,6 +6,7 @@ import { UpdateToDispatchedOrderUseCase } from "../../Domain/useCases/order/Upda
 import { getByDeliveryAndStatusOrderUseCase } from "../../Domain/useCases/order/GetByDeliveryAndStatusOrder";
 import { UpdateToOnTheWayOrderUseCase } from "../../Domain/useCases/order/UpdateToOnTheWayOrder";
 import { UpdateToDeliveredUseCase } from "../../Domain/useCases/order/UpdateToDelivered";
+import { getByClientAndStatusOrderUseCase } from "../../Domain/useCases/order/GetByClientAndStatusOrder";
 
 export interface OrderContextProps {
   ordersPayed: Order[];
@@ -17,6 +18,7 @@ export interface OrderContextProps {
     id_delivery: string,
     status: string
   ): Promise<void>;
+  getOrdersByClientAndStatus(id_client: string, status: string): Promise<void>;
   updateToDispatched(order: Order): Promise<ResponseApiDelivery>;
   updateToOnTheWay(order: Order): Promise<ResponseApiDelivery>;
   updateToDelivered(order: Order): Promise<ResponseApiDelivery>;
@@ -60,6 +62,18 @@ export const OrderProvider = ({ children }: any) => {
     else if (status === "ENTREGADO") setOrdersDelivery(result);
   };
 
+  const getOrdersByClientAndStatus = async (
+    id_client: string,
+    status: string
+  ) => {
+    const result = await getByClientAndStatusOrderUseCase(id_client, status);
+
+    if (status === "PAGADO") setOrdersPayed(result);
+    else if (status === "DESPACHADO") setOrdersDispatched(result);
+    else if (status === "EN CAMINO") setOrdersOnTheWay(result);
+    else if (status === "ENTREGADO") setOrdersDelivery(result);
+  };
+
   const updateToDispatched = async (order: Order) => {
     const result = await UpdateToDispatchedOrderUseCase(order);
     await getOrdersByStatus("PAGADO");
@@ -92,6 +106,7 @@ export const OrderProvider = ({ children }: any) => {
         ordersOnTheWay,
         getOrdersByStatus,
         getOrdersByDeliveryAndStatus,
+        getOrdersByClientAndStatus,
         updateToDispatched,
         updateToOnTheWay,
         updateToDelivered
