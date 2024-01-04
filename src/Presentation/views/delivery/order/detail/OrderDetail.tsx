@@ -2,39 +2,26 @@ import React, { useEffect } from "react";
 import { FlatList, Image, Text, ToastAndroid, View } from "react-native";
 import styles from "./Styles";
 import { StackScreenProps } from "@react-navigation/stack";
-import { AdminOrderStackParamList } from "../../../../navigator/AdminOrderStackNavigator";
 import DropDownPicker from "react-native-dropdown-picker";
 import { OrderDetailItem } from "./Item";
 import { DateFormatter } from "../../../../utils/DateFormatter";
 import useViewModel from "./ViewModel";
 import { RoundedButton } from "../../../../components/RoundedButton";
+import { DeliveryOrderStackParamList } from "../../../../navigator/DeliveryOrderStackNavigator";
 
 interface Props
   extends StackScreenProps<
-    AdminOrderStackParamList,
-    "AdminOrderDetailScreen"
+    DeliveryOrderStackParamList,
+    "DeliveryOrderDetailScreen"
   > {}
 
-export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
+export const DeliveryOrderDetailScreen = ({ navigation, route }: Props) => {
   const { order } = route.params;
-  const {
-    total,
-    deliveryUsers,
-    open,
-    value,
-    items,
-    responseMessage,
-    getTotal,
-    getDelivery,
-    setOpen,
-    setValue,
-    setItems,
-    dispatchOrder
-  } = useViewModel(order);
+  const { total, responseMessage, getTotal, updateToOnTheWayOrder } =
+    useViewModel(order);
 
   useEffect(() => {
     if (total == 0.0) getTotal();
-    getDelivery();
   }, []);
 
   useEffect(() => {
@@ -91,32 +78,39 @@ export const AdminOrderDetailScreen = ({ navigation, route }: Props) => {
           />
         </View>
 
-        <Text style={styles.deliveries}>
-          {order.status === "PAGADO"
-            ? "REPARTIDORES DISPONIBLES"
-            : `REPARTIDOR ASIGNADO: ${order.delivery?.name} ${order.delivery?.lastname}`}
-        </Text>
-        {order.status === "PAGADO" && (
-          <View style={styles.dropdown}>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-            />
+        <View style={styles.infoRow}>
+          <View style={styles.infoText}>
+            <Text style={styles.infoTitle}>Repartidor Asignado</Text>
+            <Text style={styles.infoDescription}>
+              {order.delivery?.name} {order.delivery?.lastname}
+            </Text>
           </View>
-        )}
+          <Image
+            style={styles.infoImage}
+            source={require("../../../../../../assets/my_user.png")}
+          />
+        </View>
 
         <View style={styles.totalInfo}>
           <Text style={styles.total}>TOTAL: S./{total}</Text>
-          {order.status === "PAGADO" && (
+          {order.status === "DESPACHADO" && (
             <View style={styles.button}>
               <RoundedButton
-                text="DESPACHAR ORDEN"
+                text="INICIAR ENTREGA"
                 onPress={() => {
-                  dispatchOrder();
+                  updateToOnTheWayOrder();
+                }}
+              />
+            </View>
+          )}
+          {order.status === "EN CAMINO" && (
+            <View style={styles.button}>
+              <RoundedButton
+                text="IR A LA RUTA"
+                onPress={() => {
+                  navigation.navigate("DeliveryOrderMapScreen", {
+                    order: order
+                  });
                 }}
               />
             </View>

@@ -11,12 +11,14 @@ import { ProfileUpdateScreen } from "../views/profile/update/ProfileUpdate";
 import { AdminCategoryCreateScreen } from "../views/admin/category/create/CategoryCreate";
 import { AdminCategoryUpdateScreen } from "../views/admin/category/update/CategoryUpdate";
 import { UserProvider } from "../context/UserContext";
+import { DeliveryTabsNavigator } from "./DeliveryTabsNavigator";
 
 export type RootStackParamList = {
   HomeScreen: undefined;
   RegisterScreen: undefined;
   RolesScreen: undefined;
   AdminTabsNavigator: undefined;
+  DeliveryTabsNavigator: undefined;
   ClientTabsNavigator: undefined;
   ProfileUpdateScreen: { user: User };
 };
@@ -51,6 +53,10 @@ export const MainStackNavigator = () => {
         <Stack.Screen
           name="AdminTabsNavigator"
           component={AdminTabsNavigator}
+        />
+        <Stack.Screen
+          name="DeliveryTabsNavigator"
+          component={DeliveryTabsNavigator}
         />
         <Stack.Screen
           name="ClientTabsNavigator"

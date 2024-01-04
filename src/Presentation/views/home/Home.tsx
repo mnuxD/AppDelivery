@@ -30,7 +30,12 @@ export const HomeScreen = ({ navigation, route }: Props) => {
   useEffect(() => {
     if (user?.id) {
       if (user.roles?.length! > 1) navigation.replace("RolesScreen");
-      else navigation.replace("ClientTabsNavigator");
+      else if (user.roles?.some((r) => r.name === "CLIENTE"))
+        navigation.replace("ClientTabsNavigator");
+      else if (user.roles?.some((r) => r.name === "REPARTIDOR"))
+        navigation.replace("DeliveryTabsNavigator");
+      else if (user.roles?.some((r) => r.name === "ADMIN"))
+        navigation.replace("AdminTabsNavigator");
     }
   }, [user]);
 

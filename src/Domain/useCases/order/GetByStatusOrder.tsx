@@ -1,5 +1,4 @@
 import { OrderRepositoryImpl } from "../../../Data/repositories/OrderRepository";
-import { Order } from "../../entities/Order";
 
 const { getByStatus } = new OrderRepositoryImpl();
 

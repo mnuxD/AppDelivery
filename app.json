@@ -28,7 +28,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.gopetutorial.appdelivery",
       "config": {
-        "googleMapsApiKey": "AIzaSyAOqIo6IN-B-dbY9RmSrUzU8nsuXVp45cg"
+        "googleMapsApiKey": "AIzaSyDddo9-USyr_h2V4NG-DTGEczEKW8H93xo"
       },
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"]
@@ -42,7 +42,7 @@
       "package": "com.gopetutorial.appdelivery",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyAOqIo6IN-B-dbY9RmSrUzU8nsuXVp45cg"
+          "apiKey": "AIzaSyDddo9-USyr_h2V4NG-DTGEczEKW8H93xo"
         }
       },
       "permissions": [

@@ -7,11 +7,11 @@ const AdminOrderListViewModel = () => {
     ordersDelivery,
     ordersDispatched,
     ordersOnTheWay,
-    getOrderByStatus
+    getOrdersByStatus
   } = useContext(OrderContext);
 
   const getOrders = async (status: string) => {
-    await getOrderByStatus(status);
+    await getOrdersByStatus(status);
   };
 
   return {
