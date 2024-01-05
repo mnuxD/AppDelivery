@@ -29,9 +29,10 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
     origin,
     destination,
     mapRef,
-    updateToDeliveredOrder,
-    stopForegroundUpdate
+    socket
   } = useViewModel(order);
+
+  console.log("POSITION", position);
 
   useEffect(() => {
     if (messagePermissions)
@@ -45,7 +46,7 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
   useEffect(() => {
     const unsuscribe = navigation.addListener("beforeRemove", () => {
       console.log("EVENTO: Remove");
-      stopForegroundUpdate();
+      socket.disconnect();
     });
 
     return unsuscribe;
@@ -60,7 +61,7 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
         provider={PROVIDER_GOOGLE}
         zoomControlEnabled={true}
       >
-        {position && (
+        {!!position.latitude && (
           <Marker coordinate={position}>
             <Image
               style={styles.markerImage}
@@ -120,23 +121,14 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
         <View style={styles.infoClient}>
           <Image
             style={styles.imageClient}
-            source={{ uri: order.client?.image }}
+            source={{ uri: order.delivery?.image }}
           />
           <Text style={styles.nameClient}>
-            {order.client?.name} {order.client?.lastname}
+            {order.delivery?.name} {order.delivery?.lastname}
           </Text>
           <Image
             style={styles.imagePhone}
             source={require("../../../../../../assets/phone.png")}
-          />
-        </View>
-
-        <View style={styles.buttonRefPoint}>
-          <RoundedButton
-            text="ENTREGAR PEDIDO"
-            onPress={() => {
-              updateToDeliveredOrder();
-            }}
           />
         </View>
       </View>

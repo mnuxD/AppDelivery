@@ -9,6 +9,7 @@ import { ClientShoppingBagScreen } from "../views/client/shoppingBag/ShoppingBag
 import { ClientAddressListScreen } from "../views/client/address/list/AddressList";
 import { ClientAddressCreateScreen } from "../views/client/address/create/AddressCreate";
 import { ClientAddressMapScreen } from "../views/client/address/map/AddressMap";
+import { ClientPaymentFormScreen } from "../views/client/payment/form/PaymentForm";
 export type ClientStackParamList = {
   ClientCategoryListScreen: undefined;
   ClientProductListScreen: { idCategory: string };
@@ -21,6 +22,7 @@ export type ClientStackParamList = {
   ClientAddressMapScreen:
     | { initialLatitude: number; initialLongitude: number }
     | undefined;
+  ClientPaymentFormScreen: undefined;
 };
 const Stack = createNativeStackNavigator<ClientStackParamList>();
 
@@ -115,6 +117,14 @@ export const ClientStackNavigator = () => {
           options={{
             headerShown: true,
             title: "Ubica tu dirección en el mapa"
+          }}
+        />
+        <Stack.Screen
+          name="ClientPaymentFormScreen"
+          component={ClientPaymentFormScreen}
+          options={{
+            headerShown: true,
+            title: "Formulario de pago"
           }}
         />
       </Stack.Navigator>

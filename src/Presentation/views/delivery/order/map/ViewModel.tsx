@@ -3,6 +3,7 @@ import * as Location from "expo-location";
 import MapView, { Camera } from "react-native-maps";
 import { Order } from "../../../../../Domain/entities/Order";
 import { OrderContext } from "../../../../context/OrderContext";
+import socket from "../../../../utils/SocketIO";
 
 const DeliveryOrderMapViewModel = (order: Order) => {
   const [messagePermissions, setMessagePermissions] = useState("");
@@ -32,6 +33,12 @@ const DeliveryOrderMapViewModel = (order: Order) => {
   };
 
   useEffect(() => {
+    //Llamado de socket
+    socket.connect();
+    socket.on("connect", () => {
+      console.log("---------- SOCKET IO CONNECTION ------------------");
+    });
+
     const requestPermissions = async () => {
       const foreground = await Location.requestForegroundPermissionsAsync();
       if (foreground.granted) {
@@ -97,11 +104,28 @@ const DeliveryOrderMapViewModel = (order: Order) => {
     positionSuscription?.remove(); //Eliminar los listeners para no sobrecargar la app
     positionSuscription = await Location.watchPositionAsync(
       {
-        accuracy: Location.Accuracy.BestForNavigation
+        // accuracy: Location.Accuracy.BestForNavigation //Actualiza a cada rato
+        accuracy: Location.Accuracy.Balanced //Actualiza no tantas veces
       },
       (location) => {
         console.log("POSITION", location?.coords);
-        setPosition(location?.coords);
+        socket.emit("position", {
+          id_order: order.id!,
+          lat: location?.coords.latitude,
+          lng: location?.coords.longitude
+        });
+        setOrigin(location?.coords); // ir actualizando la posicion de origen, osea del repartidor, pero esto hace que se actualize la ruta
+        setPosition(location?.coords); // ir actualizando la posicion del repartidor, es decir de su figura en el mapa
+        const newCamera: Camera = {
+          center: {
+            latitude: location?.coords.latitude!,
+            longitude: location?.coords.longitude!
+          },
+          heading: 0,
+          pitch: 0,
+          altitude: 0
+        };
+        mapRef.current?.animateCamera(newCamera, { duration: 2000 });
       }
     );
   };
@@ -118,6 +142,7 @@ const DeliveryOrderMapViewModel = (order: Order) => {
     mapRef,
     origin,
     destination,
+    socket,
     ...refPoint,
     onRegionChangeComplete,
     updateToDeliveredOrder,

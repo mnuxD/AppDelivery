@@ -31,6 +31,7 @@ export const DeliveryOrderMapScreen = ({ navigation, route }: Props) => {
     position,
     origin,
     destination,
+    socket,
     mapRef,
     updateToDeliveredOrder,
     stopForegroundUpdate
@@ -49,6 +50,7 @@ export const DeliveryOrderMapScreen = ({ navigation, route }: Props) => {
     const unsuscribe = navigation.addListener("beforeRemove", () => {
       console.log("EVENTO: Remove");
       stopForegroundUpdate();
+      socket.disconnect();
     });
 
     return unsuscribe;

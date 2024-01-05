@@ -3,8 +3,13 @@ import { FlatList, Text, ToastAndroid, View } from "react-native";
 import useViewModel from "./ViewModel";
 import { AddressListItem } from "./Item";
 import { RoundedButton } from "../../../../components/RoundedButton";
+import { StackScreenProps } from "@react-navigation/stack";
+import { ClientStackParamList } from "../../../../navigator/ClientStackNavigator";
 
-export const ClientAddressListScreen = () => {
+interface Props
+  extends StackScreenProps<ClientStackParamList, "ClientAddressListScreen"> {}
+
+export const ClientAddressListScreen = ({ navigation, route }: Props) => {
   const {
     address,
     checked,
@@ -32,7 +37,11 @@ export const ClientAddressListScreen = () => {
         )}
       />
       <View style={{ width: "100%", padding: 30 }}>
-        <RoundedButton text="CONTINUAR" onPress={createOrder} />
+        {/* <RoundedButton text="CONTINUAR" onPress={createOrder} /> */}
+        <RoundedButton
+          text="CONTINUAR"
+          onPress={() => navigation.navigate("ClientPaymentFormScreen")}
+        />
       </View>
     </View>
   );

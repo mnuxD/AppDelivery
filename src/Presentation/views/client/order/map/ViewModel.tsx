@@ -3,11 +3,12 @@ import * as Location from "expo-location";
 import MapView, { Camera } from "react-native-maps";
 import { Order } from "../../../../../Domain/entities/Order";
 import { OrderContext } from "../../../../context/OrderContext";
+import socket from "../../../../utils/SocketIO";
 
 const ClientOrderMapViewModel = (order: Order) => {
   const [messagePermissions, setMessagePermissions] = useState("");
   const [responseMessage, setResponseMessage] = useState("");
-  const [position, setPosition] = useState<Location.LocationObjectCoords>();
+  const [position, setPosition] = useState({ latitude: 0.0, longitude: 0.0 });
   const [origin, setOrigin] = useState({
     latitude: 0.0,
     longitude: 0.0
@@ -22,16 +23,27 @@ const ClientOrderMapViewModel = (order: Order) => {
     longitude: 0.0
   });
   const mapRef = useRef<MapView | null>(null);
-  let positionSuscription: Location.LocationSubscription;
-
-  const { updateToDelivered } = useContext(OrderContext);
-
-  const updateToDeliveredOrder = async () => {
-    const result = await updateToDelivered(order);
-    setResponseMessage(result.message);
-  };
 
   useEffect(() => {
+    socket.connect();
+    socket.on("connect", () => {
+      console.log("________ SOCKET IO CONNECTION_________");
+    });
+    socket.on(`position/${order.id}`, (data: any) => {
+      console.log("data", data);
+      setOrigin({ latitude: data.lat, longitude: data.lng }); // esto hace que se actualice el punto de origen, es decir que se vaya modificando la ruta
+      setPosition({ latitude: data.lat, longitude: data.lng }); // esto hace que se actualice la figura del repartidor
+      const newCamera: Camera = {
+        center: {
+          latitude: data.lat,
+          longitude: data.lng
+        },
+        heading: 0,
+        pitch: 0,
+        altitude: 0
+      };
+      mapRef.current?.animateCamera(newCamera, { duration: 2000 }); // duracion 1 para no mostrar la animacion
+    });
     const requestPermissions = async () => {
       const foreground = await Location.requestForegroundPermissionsAsync();
       if (foreground.granted) {
@@ -41,34 +53,6 @@ const ClientOrderMapViewModel = (order: Order) => {
     requestPermissions();
   }, []);
 
-  const onRegionChangeComplete = async (
-    latitude: number,
-    longitude: number
-  ) => {
-    try {
-      const place = await Location.reverseGeocodeAsync({
-        latitude,
-        longitude
-      });
-
-      let city;
-      let street;
-      let streetNumber;
-      place.find((p) => {
-        city = p.city;
-        street = p.street;
-        streetNumber = p.streetNumber;
-        setRefPoint({
-          name: `${street}, ${streetNumber}, ${city}`,
-          latitude,
-          longitude
-        });
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const startForegroundUpdate = async () => {
     const { granted } = await Location.getForegroundPermissionsAsync();
     if (!granted) {
@@ -77,7 +61,6 @@ const ClientOrderMapViewModel = (order: Order) => {
     }
 
     const location = await Location.getLastKnownPositionAsync(); //obtener la unbicacion que tengo una sola vez
-    setPosition(location?.coords);
     setOrigin({
       latitude: location?.coords.latitude!,
       longitude: location?.coords.longitude!
@@ -93,22 +76,6 @@ const ClientOrderMapViewModel = (order: Order) => {
       altitude: 0
     };
     mapRef.current?.animateCamera(newCamera, { duration: 1 }); // duracion 1 para no mostrar la animacion
-
-    positionSuscription?.remove(); //Eliminar los listeners para no sobrecargar la app
-    positionSuscription = await Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.BestForNavigation
-      },
-      (location) => {
-        console.log("POSITION", location?.coords);
-        setPosition(location?.coords);
-      }
-    );
-  };
-
-  const stopForegroundUpdate = () => {
-    positionSuscription?.remove();
-    setPosition(undefined);
   };
 
   return {
@@ -118,10 +85,8 @@ const ClientOrderMapViewModel = (order: Order) => {
     mapRef,
     origin,
     destination,
-    ...refPoint,
-    onRegionChangeComplete,
-    updateToDeliveredOrder,
-    stopForegroundUpdate
+    socket,
+    ...refPoint
   };
 };
 
