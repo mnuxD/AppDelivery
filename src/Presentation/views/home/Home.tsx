@@ -57,7 +57,6 @@ export const HomeScreen = ({ navigation, route }: Props) => {
       //Si el usuario se logea registramos notificaciones
       registerForPushNotificationsAsync()
         .then((token) => {
-          console.log("TOKEN", token);
           updateNotificationToken(user.id!, token!);
 
           if (user.roles?.length! > 1) navigation.replace("RolesScreen");

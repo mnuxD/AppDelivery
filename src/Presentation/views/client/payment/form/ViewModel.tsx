@@ -46,11 +46,6 @@ const ClientPaymentFormViewModel = () => {
   };
 
   useEffect(() => {
-    console.log("values", values);
-    console.log("valuesIdentification", valuesIdentification);
-  }, [values, valuesIdentification]);
-
-  useEffect(() => {
     setDropDownItems();
   }, [identificationTypeList]);
 

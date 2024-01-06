@@ -19,7 +19,7 @@ const ProfileUpdateViewModel = (user: User) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      quality: 1,
+      quality: 1
     });
 
     if (!result.canceled) {
@@ -32,7 +32,7 @@ const ProfileUpdateViewModel = (user: User) => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      quality: 1,
+      quality: 1
     });
 
     if (!result.canceled) {
@@ -65,7 +65,6 @@ const ProfileUpdateViewModel = (user: User) => {
       }
 
       setLoading(false);
-      console.log("RESULT: " + JSON.stringify(response));
       if (response.success) {
         saveUserSession(response.data);
         setSuccessMessage(response.message);
@@ -103,7 +102,7 @@ const ProfileUpdateViewModel = (user: User) => {
     takePhoto,
     update,
     errorMessage,
-    successMessage,
+    successMessage
   };
 };
 

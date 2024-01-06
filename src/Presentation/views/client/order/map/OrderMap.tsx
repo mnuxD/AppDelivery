@@ -32,8 +32,6 @@ export const ClientOrderMapScreen = ({ navigation, route }: Props) => {
     socket
   } = useViewModel(order);
 
-  console.log("POSITION", position);
-
   useEffect(() => {
     if (messagePermissions)
       ToastAndroid.show(messagePermissions, ToastAndroid.LONG);

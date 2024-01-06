@@ -42,10 +42,6 @@ const AdminOrderDetailViewModel = (order: Order) => {
         const index = deliveryUsers.findIndex(
           (d) => d.id === order.id_delivery
         );
-        console.log(
-          "NOTIFICATION TOKEN: ",
-          deliveryUsers[index].notification_token
-        );
 
         await sendPushNotification(
           deliveryUsers[index].notification_token!,
@@ -67,7 +63,6 @@ const AdminOrderDetailViewModel = (order: Order) => {
   const getDelivery = async () => {
     const result = await GetDeliveryUserUseCase();
     setDeliveryUsers(result);
-    console.log("REPARTIDORES", result);
   };
 
   useEffect(() => {

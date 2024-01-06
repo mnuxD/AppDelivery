@@ -108,13 +108,12 @@ const DeliveryOrderMapViewModel = (order: Order) => {
         accuracy: Location.Accuracy.Balanced //Actualiza no tantas veces
       },
       (location) => {
-        console.log("POSITION", location?.coords);
         socket.emit("position", {
           id_order: order.id!,
           lat: location?.coords.latitude,
           lng: location?.coords.longitude
         });
-        setOrigin(location?.coords); // ir actualizando la posicion de origen, osea del repartidor, pero esto hace que se actualize la ruta
+        setOrigin(location?.coords); // ir actualizando la posicion de origen, osea del repartidor, pero esto hace que se actualize la ruta (Pero actualizar la ruta consume muchos datos de la nube)
         setPosition(location?.coords); // ir actualizando la posicion del repartidor, es decir de su figura en el mapa
         const newCamera: Camera = {
           center: {

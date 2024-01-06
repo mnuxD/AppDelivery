@@ -4,8 +4,6 @@ import * as dotenv from "dotenv";
 // initialize dotenv
 dotenv.config();
 
-console.log("AAA", process.env.PROJECT_ID);
-
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "AppDelivery",

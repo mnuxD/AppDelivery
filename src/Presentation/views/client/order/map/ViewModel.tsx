@@ -30,8 +30,7 @@ const ClientOrderMapViewModel = (order: Order) => {
       console.log("________ SOCKET IO CONNECTION_________");
     });
     socket.on(`position/${order.id}`, (data: any) => {
-      console.log("data", data);
-      setOrigin({ latitude: data.lat, longitude: data.lng }); // esto hace que se actualice el punto de origen, es decir que se vaya modificando la ruta
+      setOrigin({ latitude: data.lat, longitude: data.lng }); // esto hace que se actualice el punto de origen, es decir que se vaya modificando la ruta (Pero actualizar la ruta consume muchos datos de la nube)
       setPosition({ latitude: data.lat, longitude: data.lng }); // esto hace que se actualice la figura del repartidor
       const newCamera: Camera = {
         center: {
