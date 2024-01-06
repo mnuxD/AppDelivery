@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   KeyboardAvoidingView,
@@ -10,23 +10,34 @@ import styles from "./Styles";
 import useViewModel from "./ViewModel";
 import CreditCard from "react-native-credit-card-form-ui";
 import { RoundedButton } from "../../../../components/RoundedButton";
+import DropDownPicker from "react-native-dropdown-picker";
+import { CustomTextInput } from "../../../../components/CustomTextInput";
 
 export const ClientPaymentFormScreen = () => {
-  const { creditCardRef, handleSubmit } = useViewModel();
-  const onValidStateChange = () => {
-    return null;
-  };
+  const {
+    open,
+    value,
+    items,
+    creditCardRef,
+    identificationNumber,
+    identificationTypeList,
+    onChange,
+    setOpen,
+    setValue,
+    setItems,
+    handleSubmit,
+    getIdentificationTypes
+  } = useViewModel();
+
+  useEffect(() => {
+    getIdentificationTypes();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={20}
-        style={styles.form}
-      >
+      <View style={styles.form}>
         <CreditCard
           ref={creditCardRef}
-          onValidStateChange={onValidStateChange}
           background="#E2E2E2"
           textColor="black"
           placeholderTextColor="gray"
@@ -42,7 +53,26 @@ export const ClientPaymentFormScreen = () => {
             expiration: "MM/YY"
           }}
         />
-      </KeyboardAvoidingView>
+      </View>
+      <View style={styles.dropdown}>
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+        />
+
+        <CustomTextInput
+          placeholder="Número de documento"
+          onChangeText={onChange}
+          value={identificationNumber}
+          property="identificationNumber"
+          image={require("../../../../../../assets/document.png")}
+        />
+      </View>
+
       <View style={styles.button}>
         <RoundedButton text="Continuar" onPress={handleSubmit} />
       </View>

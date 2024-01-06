@@ -37,11 +37,11 @@ export const ClientAddressListScreen = ({ navigation, route }: Props) => {
         )}
       />
       <View style={{ width: "100%", padding: 30 }}>
-        {/* <RoundedButton text="CONTINUAR" onPress={createOrder} /> */}
-        <RoundedButton
+        <RoundedButton text="CONTINUAR" onPress={createOrder} />
+        {/* <RoundedButton
           text="CONTINUAR"
           onPress={() => navigation.navigate("ClientPaymentFormScreen")}
-        />
+        /> */}
       </View>
     </View>
   );

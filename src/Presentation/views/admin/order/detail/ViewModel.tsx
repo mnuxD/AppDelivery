@@ -3,6 +3,7 @@ import { Order } from "../../../../../Domain/entities/Order";
 import { GetDeliveryUserUseCase } from "../../../../../Domain/useCases/user/GetDeliveryUser";
 import { User } from "../../../../../Domain/entities/User";
 import { OrderContext } from "../../../../context/OrderContext";
+import { NotificationPush } from "../../../../utils/NotificationPush";
 
 interface DropDownProps {
   label: string;
@@ -18,6 +19,7 @@ const AdminOrderDetailViewModel = (order: Order) => {
   const [items, setItems] = useState<DropDownProps[]>([]);
 
   const { updateToDispatched } = useContext(OrderContext);
+  const { sendPushNotification } = NotificationPush();
 
   const setDropDownItems = () => {
     let itemsDeliveryUsers: DropDownProps[] = [];
@@ -34,7 +36,23 @@ const AdminOrderDetailViewModel = (order: Order) => {
     if (value) {
       order.id_delivery = value!;
       const result = await updateToDispatched(order);
+
       setResponseMessage(result.message);
+      if (result.success) {
+        const index = deliveryUsers.findIndex(
+          (d) => d.id === order.id_delivery
+        );
+        console.log(
+          "NOTIFICATION TOKEN: ",
+          deliveryUsers[index].notification_token
+        );
+
+        await sendPushNotification(
+          deliveryUsers[index].notification_token!,
+          "PEDIDO ASIGNADO",
+          "TE HAN ASIGNADO UN PEDIDO"
+        );
+      }
     } else {
       setResponseMessage("Selecciona un repartidor");
     }

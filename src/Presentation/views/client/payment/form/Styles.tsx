@@ -3,17 +3,21 @@ import { StyleSheet } from "react-native";
 const ClientPaymentFormStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    alignItems: "center",
+    gap: 30
   },
   form: {
-    width: "100%",
-    alignItems: "center",
-    marginTop: 10,
-    flex: 1
+    marginTop: 10
   },
   button: {
     width: "100%",
     padding: 20
+  },
+  dropdown: {
+    paddingHorizontal: 20,
+    justifyContent: "flex-start",
+    flex: 1
   }
 });
 

@@ -13,4 +13,5 @@ export interface User {
   session_token?: string;
   roles?: Rol[];
   address?: Address;
+  notification_token?: string;
 }

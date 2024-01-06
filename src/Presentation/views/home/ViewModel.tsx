@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { LoginAuthUseCase } from "../../../Domain/useCases/auth/LoginAuth";
 import { UserContext } from "../../context/UserContext";
+import { updateNotificationTokenUserUseCase } from "../../../Domain/useCases/user/UpdateNotificationTokenUser";
 
 const HomeViewModel = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [values, setValues] = useState({
     email: "",
-    password: "",
+    password: ""
   });
   // const { user, getUserSession } = useUserLocal();
   const { user, saveUserSession } = useContext(UserContext);
@@ -27,6 +28,10 @@ const HomeViewModel = () => {
     }
   };
 
+  const updateNotificationToken = async (id: string, token: string) => {
+    const result = await updateNotificationTokenUserUseCase(id, token);
+  };
+
   const isValidForm = (): boolean => {
     if (values.email === "") {
       setErrorMessage("Ingresa el correo electrónico");
@@ -39,7 +44,14 @@ const HomeViewModel = () => {
     return true;
   };
 
-  return { ...values, user, errorMessage, onChange, login };
+  return {
+    ...values,
+    user,
+    errorMessage,
+    onChange,
+    login,
+    updateNotificationToken
+  };
 };
 
 export default HomeViewModel;

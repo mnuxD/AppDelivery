@@ -1,7 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
-
-import { CategoryProvider } from "./src/Presentation/context/CategoryContext";
 import { MainStackNavigator } from "./src/Presentation/navigator/MainStackNavigator";
+import { useEffect } from "react";
 
 const App = () => {
   return (

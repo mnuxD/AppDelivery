@@ -34,6 +34,20 @@ export const ProfileInfoScreen = () => {
         />
       </TouchableOpacity>
 
+      {user.roles?.length! > 1 && (
+        <TouchableOpacity
+          style={styles.exchange}
+          onPress={() => {
+            navigation.replace("RolesScreen");
+          }}
+        >
+          <Image
+            style={styles.exchangeImage}
+            source={require("../../../../../assets/exchange.png")}
+          />
+        </TouchableOpacity>
+      )}
+
       <View style={styles.logoContainer}>
         {user.image && (
           <Image style={styles.logoImage} source={{ uri: user?.image }} />

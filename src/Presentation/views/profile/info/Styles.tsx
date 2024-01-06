@@ -3,13 +3,13 @@ import { StyleSheet } from "react-native";
 const ProfileInfoStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "black"
   },
   imageBackground: {
     width: "100%",
     height: "100%",
     opacity: 0.7,
-    bottom: "30%",
+    bottom: "30%"
   },
   form: {
     width: "100%",
@@ -20,45 +20,60 @@ const ProfileInfoStyles = StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     padding: 30,
-    gap: 20,
+    gap: 20
   },
   formInfo: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center"
   },
   formContent: {
-    marginLeft: 15,
+    marginLeft: 15
   },
   formImage: {
     height: 30,
-    width: 30,
+    width: 30
   },
   formTextDescription: {
     fontSize: 12,
-    color: "gray",
+    color: "gray"
   },
   logoContainer: {
     position: "absolute",
     alignSelf: "center",
     top: "12%",
-    alignItems: "center",
+    alignItems: "center"
   },
   logoImage: {
     width: 180,
     height: 180,
     borderRadius: 100,
     borderColor: "white",
-    borderWidth: 2,
+    borderWidth: 2
   },
   logout: {
     position: "absolute",
     top: 50,
-    right: 30,
+    right: 30
   },
   logoutImage: {
     width: 40,
-    height: 40,
+    height: 40
   },
+  exchange: {
+    position: "absolute",
+    top: 100,
+    right: 30,
+    backgroundColor: "white",
+    borderRadius: 50,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  exchangeImage: {
+    width: 30,
+    height: 30
+  }
 });
 
 export default ProfileInfoStyles;

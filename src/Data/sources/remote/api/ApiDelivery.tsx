@@ -3,18 +3,18 @@ import { LocalStorage } from "../../local/LocalStorage";
 import { User } from "../../../../Domain/entities/User";
 
 const ApiDelivery = axios.create({
-  baseURL: "http://192.168.0.6:3000/api",
+  baseURL: "http://192.168.0.7:3000/api",
   headers: {
-    "Content-ype": "application/json",
-  },
+    "Content-ype": "application/json"
+  }
 });
 
 const ApiDeliveryForImage = axios.create({
-  baseURL: "http://192.168.0.6:3000/api",
+  baseURL: "http://192.168.0.7:3000/api",
   headers: {
     "Content-type": "multipart/form-data",
-    accept: "application/json",
-  },
+    accept: "application/json"
+  }
 });
 
 // INTERCEPTORS

@@ -14,12 +14,37 @@ import useViewModel from "./ViewModel";
 import styles from "./Styles";
 import { CustomTextInput } from "../../components/CustomTextInput";
 import { RootStackParamList } from "../../navigator/MainStackNavigator";
+import { NotificationPush } from "../../utils/NotificationPush";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false
+  })
+});
 
 interface Props extends StackScreenProps<RootStackParamList, "HomeScreen"> {}
 
 export const HomeScreen = ({ navigation, route }: Props) => {
-  const { email, password, user, errorMessage, onChange, login } =
-    useViewModel();
+  const {
+    email,
+    password,
+    user,
+    errorMessage,
+    onChange,
+    login,
+    updateNotificationToken
+  } = useViewModel();
+
+  const {
+    notification,
+    notificationListener,
+    responseListener,
+    setNotification,
+    registerForPushNotificationsAsync
+  } = NotificationPush();
 
   useEffect(() => {
     if (errorMessage !== "") {
@@ -29,13 +54,38 @@ export const HomeScreen = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     if (user?.id) {
-      if (user.roles?.length! > 1) navigation.replace("RolesScreen");
-      else if (user.roles?.some((r) => r.name === "CLIENTE"))
-        navigation.replace("ClientTabsNavigator");
-      else if (user.roles?.some((r) => r.name === "REPARTIDOR"))
-        navigation.replace("DeliveryTabsNavigator");
-      else if (user.roles?.some((r) => r.name === "ADMIN"))
-        navigation.replace("AdminTabsNavigator");
+      //Si el usuario se logea registramos notificaciones
+      registerForPushNotificationsAsync()
+        .then((token) => {
+          console.log("TOKEN", token);
+          updateNotificationToken(user.id!, token!);
+
+          if (user.roles?.length! > 1) navigation.replace("RolesScreen");
+          else if (user.roles?.some((r) => r.name === "CLIENTE"))
+            navigation.replace("ClientTabsNavigator");
+          else if (user.roles?.some((r) => r.name === "REPARTIDOR"))
+            navigation.replace("DeliveryTabsNavigator");
+          else if (user.roles?.some((r) => r.name === "ADMIN"))
+            navigation.replace("AdminTabsNavigator");
+        })
+        .catch((err) => console.log("error", err));
+
+      notificationListener.current =
+        Notifications.addNotificationReceivedListener((notification) => {
+          setNotification(notification);
+        });
+
+      responseListener.current =
+        Notifications.addNotificationResponseReceivedListener((response) => {
+          console.log(response);
+        });
+
+      return () => {
+        Notifications.removeNotificationSubscription(
+          notificationListener.current
+        );
+        Notifications.removeNotificationSubscription(responseListener.current);
+      };
     }
   }, [user]);
 
