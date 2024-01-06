@@ -38,7 +38,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.gopetutorial.appdelivery",
       "config": {
-        "googleMapsApiKey": "AIzaSyDddo9-USyr_h2V4NG-DTGEczEKW8H93xo"
+        "googleMapsApiKey": ""
       },
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"]
@@ -52,7 +52,7 @@
       "package": "com.gopetutorial.appdelivery",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyDddo9-USyr_h2V4NG-DTGEczEKW8H93xo"
+          "apiKey": ""
         }
       },
       "permissions": [
@@ -67,7 +67,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "e94cfbe3-2e15-47f3-bfc1-a6e1ed6e1a33"
+        "projectId": ""
       }
     }
   }
